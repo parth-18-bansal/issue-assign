@@ -49,6 +49,14 @@ jobs:
             echo "issue_url=https://api.github.com/repos/${{ github.repository }}/issues/$ISSUE_NUMBER" >> $GITHUB_OUTPUT
           fi
 
+      - name: Close PR if no linked issue
+        if: steps.validate.outputs.no_issue == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr close "$PR_NUMBER" --comment "No linked issue, please do not open PRs if there's no corresponding issue."
+
       - name: Validate linked issue actually exists
         id: check_issue
         env:
@@ -70,14 +78,6 @@ jobs:
         run: |
           gh pr close ${{ github.event.pull_request.number }} \
           --comment "Invalid issue reference — the linked issue does not exist."
-
-      - name: Close PR if no linked issue
-        if: steps.validate.outputs.no_issue == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          gh pr close "$PR_NUMBER" --comment "No linked issue, please do not open PRs if there's no corresponding issue."
 
       - name: Get issue details
         if: steps.validate.outputs.no_issue == 'false'
