@@ -67,7 +67,7 @@ jobs:
           ISSUE_NUMBER=${{ steps.validate.outputs.issue_number }}
 
           echo "Checking if issue #$ISSUE_NUMBER exists..."
-          if gh api "repos/${{ github.repository }}/issues/$ISSUE_NUMBER" >/dev/null 2>&1; then
+          if gh api --exit-status "repos/${{ github.repository }}/issues/$ISSUE_NUMBER" >/dev/null 2>&1; then
             exists=true
           else
             exists=false
