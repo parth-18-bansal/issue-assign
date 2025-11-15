@@ -106,8 +106,10 @@ jobs:
 
           if echo "$STATUS" | grep -q "200"; then
             echo "exists=true" >> $GITHUB_OUTPUT
+            echo "exist=true"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
+            echo "exist=false"
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
