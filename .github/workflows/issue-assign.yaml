@@ -105,10 +105,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            if gh api --exit-status "${{ steps.validate.outputs.issue_url }}" >/dev/null; then
+            if gh api -i "repos/testing-18-care/issue-assign/issues/1" 2>/dev/null | grep -q "200 OK"; then
               echo "Issue exists"
             else
-              echo "Issue does not exist"
+              echo "Issue does NOT exist"
             fi
 
 
