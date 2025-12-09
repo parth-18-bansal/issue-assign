@@ -106,6 +106,8 @@ jobs:
       #     gh pr close "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --comment "PR is assigned to someone else. Please refrain from opening PRs until issue is assigned to you."
 
       - name: Get the detaile about the PR author
+        env:
+          GH_TOKEN: ${{ github.token }}
         id: prinfo
         run: |
           response=$(gh api graphql -f query='
